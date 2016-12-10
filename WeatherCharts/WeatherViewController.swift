@@ -7,21 +7,27 @@
 //
 
 import UIKit
+import CoreLocation
 
 
- class WeatherViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+ class WeatherViewController: UIViewController,UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
-   
-
+  
+    
+    
+    let settingURL =
+        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+    
     lazy var forecastAPIClient = ForecastAPIClient(APIKey: "b0bdf0bfd2f5f3f843956c214fcef222")
     
-    let coordinate = Coordinate(latitude: 33.0, longitude: -122)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+       let coordinate = Coordinate(latitude: 31.2, longitude: 133.4)
         
-        forecastAPIClient.fetchCurrentWeather(coordinate: coordinate){
+        forecastAPIClient.fetchCurrentWeather(coordinate: coordinate ){
             result in
             switch result {
             case .Success(let currentWeather):
@@ -54,4 +60,33 @@ import UIKit
         
         return cell
     }
+    
+    //
+    
+    
+
+    
+    //Notification
+    
+    func showSimpleAlert( title: String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(
+            title: "OK",
+            style:  .default,
+            handler: nil
+        )
+        alert.addAction(okAction)
+        present(
+            alert,
+            animated: true,
+            completion: nil
+        )
+    }
+   
+    
+    
 }
